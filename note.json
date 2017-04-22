@@ -3,7 +3,7 @@
     {
       "text": "import org.apache.spark.sql.SparkSession\nimport org.apache.spark.sql.Row\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.functions.udf",
       "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:22 PM",
+      "dateUpdated": "Apr 22, 2017 6:27:22 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -31,15 +31,15 @@
       "jobName": "paragraph_1492801965154_-933441345",
       "id": "20170421-151245_533549501",
       "dateCreated": "Apr 21, 2017 3:12:45 PM",
-      "dateStarted": "Apr 22, 2017 2:28:22 PM",
-      "dateFinished": "Apr 22, 2017 2:28:22 PM",
+      "dateStarted": "Apr 22, 2017 6:27:22 PM",
+      "dateFinished": "Apr 22, 2017 6:27:22 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "val spark \u003d SparkSession.builder().appName(\"pCTR\").getOrCreate() // start the spark session\nvar train_data \u003d sqlContext.read.format(\"com.databricks.spark.csv\") // read in main training file\n    .option(\"delimiter\", \"\\t\")\n    .load(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/training.txt\")",
+      "text": "val training_full_location \u003d \"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/training.txt\"\nval training_reduced_location \u003d \"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/training_reduced.txt\"\nval training_refined_location \u003d \"/Users/JCFL/Code/CT/Data Science/Assignment2+3/output/25k/data.csv\"",
       "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:23 PM",
+      "dateUpdated": "Apr 22, 2017 6:32:11 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -59,7 +59,43 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "\nspark: org.apache.spark.sql.SparkSession \u003d org.apache.spark.sql.SparkSession@7600e9d1\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [_c0: string, _c1: string ... 10 more fields]\n"
+            "data": "\ntraining_full_location: String \u003d /Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/training.txt\n\ntraining_reduced_location: String \u003d /Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/training_reduced.txt\n\ntraining_refined_location: String \u003d /Users/JCFL/Code/CT/Data Science/Assignment2+3/output/25k/data.csv\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1492895594937_459367404",
+      "id": "20170422-171314_448569073",
+      "dateCreated": "Apr 22, 2017 5:13:14 PM",
+      "dateStarted": "Apr 22, 2017 6:32:11 PM",
+      "dateFinished": "Apr 22, 2017 6:32:11 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val spark \u003d SparkSession.builder().appName(\"pCTR\").getOrCreate() // start the spark session\nvar train_data \u003d sqlContext.read.format(\"com.databricks.spark.csv\") // read in main training file\n    .option(\"delimiter\", \"\\t\")\n    .load(training_reduced_location)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 22, 2017 6:27:24 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala",
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nspark: org.apache.spark.sql.SparkSession \u003d org.apache.spark.sql.SparkSession@46749d6b\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [_c0: string, _c1: string ... 10 more fields]\n"
           }
         ]
       },
@@ -67,15 +103,15 @@
       "jobName": "paragraph_1492803032155_1867275071",
       "id": "20170421-153032_743090305",
       "dateCreated": "Apr 21, 2017 3:30:32 PM",
-      "dateStarted": "Apr 22, 2017 2:28:23 PM",
-      "dateFinished": "Apr 22, 2017 2:28:23 PM",
+      "dateStarted": "Apr 22, 2017 6:27:24 PM",
+      "dateFinished": "Apr 22, 2017 6:27:24 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "// import additional data files\n\nvar descriptions_df \u003d sqlContext.read.format(\"com.databricks.spark.csv\") // read in descriptions file\n    .option(\"delimiter\", \"\\t\")\n    .load(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/descriptionid_tokensid.txt\")\n    \ndescriptions_df.printSchema()\n\nvar keywords_df \u003d sqlContext.read.format(\"com.databricks.spark.csv\") // read in keywords file\n    .option(\"delimiter\", \"\\t\")\n    .load(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/purchasedkeywordid_tokensid.txt\")\n    \nkeywords_df.printSchema()\n\nvar query_df \u003d sqlContext.read.format(\"com.databricks.spark.csv\") // read in query file\n    .option(\"delimiter\", \"\\t\")\n    .load(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/queryid_tokensid.txt\")\n    \nquery_df.printSchema()\n\nvar title_df \u003d sqlContext.read.format(\"com.databricks.spark.csv\") // read in title id\n    .option(\"delimiter\", \"\\t\")\n    .load(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/titleid_tokensid.txt\")\n\ntitle_df.printSchema()\n\nvar userprofile_df \u003d  sqlContext.read.format(\"com.databricks.spark.csv\") // read in userprofile file\n    .option(\"delimiter\", \"\\t\")\n    .load(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/data/track2/userid_profile.txt\")\n    \nuserprofile_df.printSchema()",
       "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:24 PM",
+      "dateUpdated": "Apr 22, 2017 6:27:25 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -103,15 +139,15 @@
       "jobName": "paragraph_1492808977858_-354883347",
       "id": "20170421-170937_556376046",
       "dateCreated": "Apr 21, 2017 5:09:37 PM",
-      "dateStarted": "Apr 22, 2017 2:28:24 PM",
-      "dateFinished": "Apr 22, 2017 2:28:25 PM",
+      "dateStarted": "Apr 22, 2017 6:27:25 PM",
+      "dateFinished": "Apr 22, 2017 6:27:26 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "train_data \u003d train_data.withColumn(\"Click\", train_data(\"_c0\").cast(\"Int\")).drop(\"_c0\")\n                            .withColumn(\"Impression\", train_data(\"_c1\").cast(\"Int\")).drop(\"_c1\")\n                            .withColumn(\"DisplayURL\", train_data(\"_c2\")).drop(\"_c2\")\n                            .withColumn(\"AdID\", train_data(\"_c3\")).drop(\"_c3\")\n                            .withColumn(\"AdvertiserID\", train_data(\"_c4\")).drop(\"_c4\")\n                            .withColumn(\"Depth\", train_data(\"_c5\").cast(\"Int\")).drop(\"_c5\")\n                            .withColumn(\"Position\", train_data(\"_c6\").cast(\"Int\")).drop(\"_c6\")\n                            .withColumn(\"QueryID\", train_data(\"_c7\")).drop(\"_c7\")\n                            .withColumn(\"KeywordID\", train_data(\"_c8\")).drop(\"_c8\")\n                            .withColumn(\"TitleID\", train_data(\"_c9\")).drop(\"_c9\")\n                            .withColumn(\"DescriptionID\", train_data(\"_c10\")).drop(\"_c10\")\n                            .withColumn(\"UserID\", train_data(\"_c11\")).drop(\"_c11\")",
       "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:27 PM",
+      "dateUpdated": "Apr 22, 2017 6:27:27 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -139,15 +175,15 @@
       "jobName": "paragraph_1492802307154_1671042741",
       "id": "20170421-151827_1285571777",
       "dateCreated": "Apr 21, 2017 3:18:27 PM",
-      "dateStarted": "Apr 22, 2017 2:28:27 PM",
-      "dateFinished": "Apr 22, 2017 2:28:27 PM",
+      "dateStarted": "Apr 22, 2017 6:27:27 PM",
+      "dateFinished": "Apr 22, 2017 6:27:27 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "train_data \u003d train_data.join(query_df, train_data(\"QueryID\") \u003c\u003d\u003e query_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"QueryTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(keywords_df, train_data(\"KeywordID\") \u003c\u003d\u003e keywords_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"KeywordTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(title_df, train_data(\"TitleID\") \u003c\u003d\u003e title_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"TitleTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(descriptions_df, train_data(\"DescriptionID\") \u003c\u003d\u003e descriptions_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"DescriptionTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(userprofile_df, train_data(\"UserID\") \u003c\u003d\u003e userprofile_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"Gender\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\ntrain_data \u003d train_data.withColumn(\"Age\", train_data(\"_c2\")).drop(\"_c2\")",
+      "text": "// check for duplicate rows \nvar top25k \u003d train_data.groupBy(\"AdID\", \"QueryID\").count().sort(desc(\"count\"))\n\nvar top100Instances \u003d top25k.limit(240)\n\ntop100Instances \u003d top100Instances.withColumn(\"AID\", top100Instances(\"AdID\")).drop(\"AdID\")\ntop100Instances \u003d top100Instances.withColumn(\"QID\", top100Instances(\"QueryID\")).drop(\"QueryID\")\n\nvar train_refined \u003d train_data.join(top100Instances, (train_data(\"AdID\") \u003c\u003d\u003e top100Instances(\"AID\")) \u0026\u0026 (train_data(\"QueryID\") \u003c\u003d\u003e top100Instances(\"QID\")))\n//var top25k \u003d train_data.groupBy(\"AdID\", \"QueryID\").agg(sum(\"Impression\")).sort(desc(\"sum(Impression)\"))\n\ntrain_data \u003d train_refined",
       "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:28 PM",
+      "dateUpdated": "Apr 22, 2017 6:27:28 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -167,7 +203,43 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 12 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 11 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 13 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 12 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 14 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 13 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 15 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 14 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 17 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 16 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 16 more fields]\n"
+            "data": "\ntop25k: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [AdID: string, QueryID: string ... 1 more field]\n\ntop100Instances: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [AdID: string, QueryID: string ... 1 more field]\n\ntop100Instances: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [QueryID: string, count: bigint ... 1 more field]\n\ntop100Instances: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [count: bigint, AID: string ... 1 more field]\n\ntrain_refined: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 13 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 13 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1492890772784_353108906",
+      "id": "20170422-155252_277162001",
+      "dateCreated": "Apr 22, 2017 3:52:52 PM",
+      "dateStarted": "Apr 22, 2017 6:27:28 PM",
+      "dateFinished": "Apr 22, 2017 6:27:29 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "train_data \u003d train_data.join(query_df, train_data(\"QueryID\") \u003c\u003d\u003e query_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"QueryTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(keywords_df, train_data(\"KeywordID\") \u003c\u003d\u003e keywords_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"KeywordTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(title_df, train_data(\"TitleID\") \u003c\u003d\u003e title_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"TitleTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(descriptions_df, train_data(\"DescriptionID\") \u003c\u003d\u003e descriptions_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"DescriptionTokens\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\n\ntrain_data \u003d train_data.join(userprofile_df, train_data(\"UserID\") \u003c\u003d\u003e userprofile_df(\"_c0\"))\ntrain_data \u003d train_data.withColumn(\"Gender\", train_data(\"_c1\")).drop(\"_c1\",\"_c0\")\ntrain_data \u003d train_data.withColumn(\"Age\", train_data(\"_c2\")).drop(\"_c2\")",
+      "user": "anonymous",
+      "dateUpdated": "Apr 22, 2017 6:27:36 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala",
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 15 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 14 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 16 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 15 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 17 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 16 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 18 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 17 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 20 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 19 more fields]\n\ntrain_data: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 19 more fields]\n"
           }
         ]
       },
@@ -175,15 +247,15 @@
       "jobName": "paragraph_1492815970511_2087863799",
       "id": "20170421-190610_976225722",
       "dateCreated": "Apr 21, 2017 7:06:10 PM",
-      "dateStarted": "Apr 22, 2017 2:28:28 PM",
-      "dateFinished": "Apr 22, 2017 2:28:29 PM",
+      "dateStarted": "Apr 22, 2017 6:27:36 PM",
+      "dateFinished": "Apr 22, 2017 6:27:37 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "// check for duplicate rows \nvar top25k \u003d train_data.groupBy(\"AdID\", \"QueryID\").count().sort(desc(\"count\"))\n\nvar top100Instances \u003d top25k.limit(100)\n\ntop100Instances \u003d top100Instances.withColumn(\"AID\", top100Instances(\"AdID\")).drop(\"AdID\")\ntop100Instances \u003d top100Instances.withColumn(\"QID\", top100Instances(\"QueryID\")).drop(\"QueryID\")\n\nvar train_refined \u003d train_data.join(top100Instances, (train_data(\"AdID\") \u003c\u003d\u003e top100Instances(\"AID\")) \u0026\u0026 (train_data(\"QueryID\") \u003c\u003d\u003e top100Instances(\"QID\")))",
+      "text": "train_data.limit(25000).coalesce(1).write.format(\"com.databricks.spark.csv\").option(\"header\", \"true\").save(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/output/25k\")",
       "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:47 PM",
+      "dateUpdated": "Apr 22, 2017 6:29:31 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -199,90 +271,85 @@
       },
       "results": {
         "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\ntop25k: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [AdID: string, QueryID: string ... 1 more field]\n\ntop100Instances: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [AdID: string, QueryID: string ... 1 more field]\n\ntop100Instances: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [QueryID: string, count: bigint ... 1 more field]\n\ntop100Instances: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [count: bigint, AID: string ... 1 more field]\n\ntrain_refined: org.apache.spark.sql.DataFrame \u003d [Click: int, Impression: int ... 19 more fields]\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1492874335536_762320124",
-      "id": "20170422-111855_1204545464",
-      "dateCreated": "Apr 22, 2017 11:18:55 AM",
-      "dateStarted": "Apr 22, 2017 2:28:47 PM",
-      "dateFinished": "Apr 22, 2017 2:28:48 PM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "text": "train_refined.printSchema()",
-      "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:28:52 PM",
-      "config": {
-        "colWidth": 12.0,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "scala"
-        },
-        "editorMode": "ace/mode/scala"
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "root\n |-- Click: integer (nullable \u003d true)\n |-- Impression: integer (nullable \u003d true)\n |-- DisplayURL: string (nullable \u003d true)\n |-- AdID: string (nullable \u003d true)\n |-- AdvertiserID: string (nullable \u003d true)\n |-- Depth: integer (nullable \u003d true)\n |-- Position: integer (nullable \u003d true)\n |-- QueryID: string (nullable \u003d true)\n |-- KeywordID: string (nullable \u003d true)\n |-- TitleID: string (nullable \u003d true)\n |-- DescriptionID: string (nullable \u003d true)\n |-- UserID: string (nullable \u003d true)\n |-- QueryTokens: string (nullable \u003d true)\n |-- KeywordTokens: string (nullable \u003d true)\n |-- TitleTokens: string (nullable \u003d true)\n |-- DescriptionTokens: string (nullable \u003d true)\n |-- Gender: string (nullable \u003d true)\n |-- Age: string (nullable \u003d true)\n |-- count: long (nullable \u003d false)\n |-- AID: string (nullable \u003d true)\n |-- QID: string (nullable \u003d true)\n\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1492883951372_-1431606310",
-      "id": "20170422-135911_843405127",
-      "dateCreated": "Apr 22, 2017 1:59:11 PM",
-      "dateStarted": "Apr 22, 2017 2:28:52 PM",
-      "dateFinished": "Apr 22, 2017 2:28:52 PM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "text": "train_refined.write.format(\"com.databricks.spark.csv\").save(\"/Users/JCFL/Code/CT/Data Science/Assignment2+3/output/train_refined.csv\")",
-      "user": "anonymous",
-      "dateUpdated": "Apr 22, 2017 2:29:01 PM",
-      "config": {
-        "colWidth": 12.0,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "scala"
-        },
-        "editorMode": "ace/mode/scala"
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "ERROR",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\norg.apache.spark.sql.AnalysisException: Duplicate column(s) : \"QueryID\", \"AdID\" found, cannot save to file.;\n  at org.apache.spark.sql.execution.datasources.InsertIntoHadoopFsRelationCommand.run(InsertIntoHadoopFsRelationCommand.scala:69)\n  at org.apache.spark.sql.execution.command.ExecutedCommandExec.sideEffectResult$lzycompute(commands.scala:58)\n  at org.apache.spark.sql.execution.command.ExecutedCommandExec.sideEffectResult(commands.scala:56)\n  at org.apache.spark.sql.execution.command.ExecutedCommandExec.doExecute(commands.scala:74)\n  at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$1.apply(SparkPlan.scala:114)\n  at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$1.apply(SparkPlan.scala:114)\n  at org.apache.spark.sql.execution.SparkPlan$$anonfun$executeQuery$1.apply(SparkPlan.scala:135)\n  at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)\n  at org.apache.spark.sql.execution.SparkPlan.executeQuery(SparkPlan.scala:132)\n  at org.apache.spark.sql.execution.SparkPlan.execute(SparkPlan.scala:113)\n  at org.apache.spark.sql.execution.QueryExecution.toRdd$lzycompute(QueryExecution.scala:87)\n  at org.apache.spark.sql.execution.QueryExecution.toRdd(QueryExecution.scala:87)\n  at org.apache.spark.sql.execution.datasources.DataSource.write(DataSource.scala:492)\n  at org.apache.spark.sql.DataFrameWriter.save(DataFrameWriter.scala:215)\n  at org.apache.spark.sql.DataFrameWriter.save(DataFrameWriter.scala:198)\n  ... 52 elided\n"
-          }
-        ]
+        "msg": []
       },
       "apps": [],
       "jobName": "paragraph_1492885280394_385650280",
       "id": "20170422-142120_80915538",
       "dateCreated": "Apr 22, 2017 2:21:20 PM",
-      "dateStarted": "Apr 22, 2017 2:26:21 PM",
-      "dateFinished": "Apr 22, 2017 2:26:22 PM",
-      "status": "ERROR",
+      "dateStarted": "Apr 22, 2017 6:29:31 PM",
+      "dateFinished": "Apr 22, 2017 6:30:10 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "var training_main \u003d sqlContext.read.format(\"com.databricks.spark.csv\").option(\"header\", \"true\" ) // read in main training file\n    .load(training_refined_location)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 22, 2017 7:09:14 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\ntraining_main: org.apache.spark.sql.DataFrame \u003d [Click: string, Impression: string ... 19 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1492895358898_-604387208",
+      "id": "20170422-170918_1429685679",
+      "dateCreated": "Apr 22, 2017 5:09:18 PM",
+      "dateStarted": "Apr 22, 2017 7:09:14 PM",
+      "dateFinished": "Apr 22, 2017 7:09:14 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "var ctr_identifiers \u003d Seq(\"DisplayURL\", \"AdID\", \"AdvertiserID\", \"QueryID\", \"KeywordID\", \"TitleID\", \"DescriptionID\", \"UserID\")\nvar group_temp \u003d training_main\n\nfor(identifier \u003c- ctr_identifiers) {\n    var col_name \u003d identifier + \"_CTR\"\n    group_temp \u003d training_main.groupBy(identifier).agg(sum(\"Click\"), sum(\"Impression\"))\n    group_temp \u003d group_temp.withColumn(col_name, group_temp(\"sum(Click)\")/group_temp(\"sum(Impression)\")).drop(\"sum(Click)\", \"sum(Impression)\")\n    group_temp \u003d group_temp.withColumn(\"id\", group_temp(identifier)).drop(identifier)\n    training_main \u003d training_main.join(group_temp, training_main(identifier) \u003c\u003d\u003e group_temp(\"id\")).drop(\"id\")\n}",
+      "user": "anonymous",
+      "dateUpdated": "Apr 22, 2017 7:09:15 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nctr_identifiers: Seq[String] \u003d List(DisplayURL, AdID, AdvertiserID, QueryID, KeywordID, TitleID, DescriptionID, UserID)\n\ngroup_temp: org.apache.spark.sql.DataFrame \u003d [Click: string, Impression: string ... 19 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1492895919133_17182004",
+      "id": "20170422-171839_1599468087",
+      "dateCreated": "Apr 22, 2017 5:18:39 PM",
+      "dateStarted": "Apr 22, 2017 7:09:15 PM",
+      "dateFinished": "Apr 22, 2017 7:09:17 PM",
+      "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
@@ -293,9 +360,9 @@
         "forms": {}
       },
       "apps": [],
-      "jobName": "paragraph_1492885574433_-2089224856",
-      "id": "20170422-142614_1380879868",
-      "dateCreated": "Apr 22, 2017 2:26:14 PM",
+      "jobName": "paragraph_1492902273441_1077202376",
+      "id": "20170422-190433_1841157392",
+      "dateCreated": "Apr 22, 2017 7:04:33 PM",
       "status": "READY",
       "progressUpdateIntervalMs": 500
     }
